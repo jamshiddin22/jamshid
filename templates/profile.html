@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StarK Profil</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    body { display: flex; background: linear-gradient(135deg, #0a0a0a, #1a1a1a); color: #fff; min-height: 100vh; }
+    .sidebar { width: 230px; background: rgba(30,30,30,0.95); backdrop-filter: blur(10px); padding: 20px; display:flex; flex-direction:column; justify-content:space-between; border-right:1px solid rgba(255,255,255,0.08); transition:0.4s; }
+    .sidebar:hover { width: 250px; }
+    .sidebar h2 { text-align:center; margin-bottom:20px; color:#00d0ff; letter-spacing:1px; }
+    .nav-links a { display:block; padding:10px 12px; margin-bottom:8px; border-radius:8px; text-decoration:none; color:#ddd; background:rgba(255,255,255,0.03); transition:0.25s; }
+    .nav-links a:hover { background:#00d0ff; color:#000; transform:translateX(6px); }
+    .footer { font-size:12px; text-align:center; color:#888; }
+    .main-content { flex:1; padding:30px; overflow-y:auto; }
+    .profile-header { display:flex; align-items:center; gap:15px; margin-bottom:20px; }
+    .profile-header img { width:80px; height:80px; border-radius:50%; border:2px solid #00d0ff; object-fit:cover; }
+    h1 { font-size:1.8rem; color:#00d0ff; margin-bottom:20px; }
+    .sections { display:grid; grid-template-columns: 2fr 1fr 1fr; gap:20px; }
+    .card { background: rgba(255,255,255,0.04); border-radius:12px; padding:18px; box-shadow:0 6px 18px rgba(0,0,0,0.4); transition:0.25s; }
+    .card h2 { color:#00d0ff; margin-bottom:12px; font-size:1.05rem; }
+    .btn { display:inline-block; padding:8px 14px; background:#00d0ff; color:#000; border-radius:8px; text-decoration:none; font-weight:600; transition:0.2s; }
+    .btn:hover { background:#009ecc; }
+    @media (max-width:900px) {
+      .sections { grid-template-columns: 1fr; }
+      .sidebar { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div>
+      <h2>StarK Panel</h2>
+      <div class="nav-links">
+        <a href="{{ url_for('index') }}">🏠 Bosh sahifa</a>
+        <a href="{{ url_for('videos') }}">📚 Videodarslar</a>
+        <a href="#">📰 Yangiliklar</a>
+        <a href="#">📑 Hujjatlar</a>
+        <a href="#">⚙️ Sozlamalar</a>
+        <a href="{{ url_for('edit_profile') }}">⚡ Profilni Tahrirlash</a>
+      </div>
+    </div>
+    <div class="footer">
+      <p>© 2025 StarK System</p>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main-content">
+    <div class="profile-header">
+      {% if user.profile_image %}
+        <img src="{{ url_for('static', filename='profile_pics/' ~ user.profile_image) }}" alt="Profil rasmi">
+      {% else %}
+        <img src="{{ url_for('static', filename='images/profile.jpg') }}" alt="Profil rasmi">
+      {% endif %}
+      <div>
+        <h3>{{ user.name }}</h3>
+        <p style="color:#aaa;">{{ email }}</p>
+      </div>
+    </div>
+
+    <h1>Profil Sahifasi</h1>
+
+    <div class="sections">
+      <div class="card">
+        <h2>🎥 Videodarslar</h2>
+        <video controls style="width:100%; border-radius:8px;">
+          <source src="{{ url_for('static', filename='videos/lesson1.mp4') }}" type="video/mp4">
+          Brauzeringiz video formatini qo'llab-quvvatlamaydi.
+        </video>
+        <a href="{{ url_for('videos') }}" class="btn" style="margin-top:10px; display:inline-block;">Barcha darslarni ko‘rish</a>
+      </div>
+
+      <div class="card">
+        <h2>📰 Yangiliklar</h2>
+        <p>Yangi “Python” kursi qo‘shildi. Endi siz Flask va API integratsiya asoslarini o‘rganishingiz mumkin.</p>
+        <a href="#" class="btn" style="margin-top:10px;">Batafsil</a>
+      </div>
+
+      <div class="card">
+        <h2>📑 Hujjatlar</h2>
+        <p>Platforma uchun foydalanuvchi qo‘llanmasi va biznes reja namunasi joylandi.</p>
+        <a href="#" class="btn" style="margin-top:10px;">Yuklab olish</a>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
+

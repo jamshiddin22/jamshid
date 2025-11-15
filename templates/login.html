@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StarK — Kirish</title>
+  <style>
+    *{box-sizing:border-box;font-family:Poppins,system-ui;}
+    body{margin:0;min-height:100vh;background:url("{{ url_for('static', filename='images/spacex.jpg') }}") center/cover no-repeat;color:#fff;display:flex;align-items:center;justify-content:center}
+    body::before{content:"";position:fixed;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(0,0,0,0.75))}
+    .box{position:relative;z-index:1;background:rgba(255,255,255,0.04);padding:24px;border-radius:14px;width:360px;max-width:94%}
+    h2{margin:0 0 10px}
+    input{width:100%;padding:12px;border-radius:10px;border:none;background:rgba(255,255,255,0.06);color:#fff;margin-top:8px}
+    .btn{margin-top:12px;padding:10px;border-radius:10px;border:none;background:linear-gradient(90deg,#00d4ff,#0078ff);font-weight:700;cursor:pointer;width:100%}
+    .muted{margin-top:10px;color:rgba(255,255,255,0.85)}
+    .flash{padding:8px;border-radius:8px;background:rgba(0,0,0,0.2);margin-bottom:8px}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Kirish</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="flash">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('login') }}" autocomplete="off">
+      <input name="email" type="email" placeholder="Email" required>
+      <input name="password" type="password" placeholder="Parol" required>
+      <button class="btn" type="submit">Kirish</button>
+    </form>
+
+    <p class="muted">Ro'yxatdan o'tmaganmisiz? <a href="{{ url_for('register') }}" style="color:#00d4ff;text-decoration:none">Ro'yxatdan o'tish</a></p>
+  </div>
+</body>
+</html>

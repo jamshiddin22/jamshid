@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profilni tahrirlash | StarK System</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+    body { background: linear-gradient(135deg,#0a0a0a,#1a1a1a); color:#fff; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+    .edit-container { width:420px; background:rgba(255,255,255,0.03); backdrop-filter: blur(12px); padding:26px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+    h2 { text-align:center; color:#00d0ff; margin-bottom:18px; }
+    form { display:flex; flex-direction:column; gap:12px; }
+    label { font-size:0.9rem; color:#aaa; }
+    input, select { width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.02); color:#fff; outline:none; }
+    input:focus, select:focus { box-shadow:0 0 6px #00d0ff; border-color:#00d0ff; }
+    .profile-preview { width:80px; height:80px; border-radius:50%; object-fit:cover; border:2px solid #00d0ff; display:block; margin:0 auto 6px; }
+    .btn { background:#00d0ff; color:#000; border:none; padding:10px; border-radius:8px; font-weight:700; cursor:pointer; }
+    .btn:hover { background:#009ecc; }
+    .back-link { display:block; text-align:center; color:#aaa; margin-top:10px; text-decoration:none; }
+    .back-link:hover { color:#00d0ff; }
+  </style>
+</head>
+<body>
+
+  <div class="edit-container">
+    <h2>Profilni tahrirlash</h2>
+
+    <form action="{{ url_for('edit_profile') }}" method="post" enctype="multipart/form-data">
+      {% if user.profile_image %}
+        <img src="{{ url_for('static', filename='profile_pics/' ~ user.profile_image) }}" alt="Profil rasmi" class="profile-preview" id="previewImg">
+      {% else %}
+        <img src="{{ url_for('static', filename='images/profile.jpg') }}" alt="Profil rasmi" class="profile-preview" id="previewImg">
+      {% endif %}
+
+      <label for="profile_image">Profil rasmi:</label>
+      <input type="file" id="profile_image" name="profile_image" accept="image/*" onchange="previewFile(this)">
+
+      <label for="full_name">Ism:</label>
+      <input type="text" id="full_name" name="full_name" value="{{ user.name }}" required>
+
+      <label for="email_display">Email (o‘zgartirib bo‘lmaydi):</label>
+      <input type="email" id="email_display" name="email_display" value="{{ email }}" readonly>
+
+      <label for="age">Yoshi:</label>
+      <input type="number" id="age" name="age" value="{{ user.age or '' }}">
+
+      <label for="gender">Jins:</label>
+      <select id="gender" name="gender">
+        <option value="" {% if not user.gender %}selected{% endif %}>—</option>
+        <option value="male" {% if user.gender == 'male' or user.gender == 'Erkak' %}selected{% endif %}>Erkak</option>
+        <option value="female" {% if user.gender == 'female' or user.gender == 'Ayol' %}selected{% endif %}>Ayol</option>
+        <option value="other" {% if user.gender == 'other' %}selected{% endif %}>Boshqa</option>
+      </select>
+
+      <label for="profession">Kasb:</label>
+      <input type="text" id="profession" name="profession" value="{{ user.profession or '' }}">
+
+      <button type="submit" class="btn">Saqlash</button>
+    </form>
+
+    <a href="{{ url_for('profile') }}" class="back-link">← Orqaga qaytish</a>
+  </div>
+
+  <script>
+    function previewFile(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('previewImg').src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+
+</body>
+</html>

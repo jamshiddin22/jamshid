@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StarK — Ro'yxatdan o'tish</title>
+  <style>
+    *{box-sizing:border-box;font-family:Poppins,system-ui;}
+    body{margin:0;min-height:100vh;background:url("{{ url_for('static', filename='images/spacex.jpg') }}") center/cover no-repeat;color:#fff;display:flex;align-items:center;justify-content:center}
+    body::before{content:"";position:fixed;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(0,0,0,0.75))}
+    .card{position:relative;z-index:1;width:420px;max-width:94%;background:rgba(255,255,255,0.06);padding:26px;border-radius:16px;backdrop-filter:blur(6px)}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+    .logo{width:56px;height:56px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,#00d4ff,#0078ff);color:#001;font-weight:800}
+    h1{margin:0 0 6px;font-size:20px}
+    p.lead{margin:0 0 16px;color:rgba(255,255,255,0.9)}
+    form{display:grid;gap:12px}
+    input{padding:12px;border-radius:10px;border:none;background:rgba(255,255,255,0.06);color:#fff;font-size:14px}
+    button{padding:12px;border-radius:12px;border:none;background:linear-gradient(90deg,#00d4ff,#0078ff);font-weight:700;cursor:pointer}
+    .muted{font-size:13px;color:rgba(255,255,255,0.75)}
+    .flash{padding:8px;border-radius:8px;background:rgba(0,0,0,0.2);margin-bottom:8px}
+  </style>
+</head>
+<body>
+  <div class="card" role="main" aria-labelledby="regTitle">
+    <div class="brand">
+      <div class="logo">SK</div>
+      <div>
+        <h1 id="regTitle">StarK — Ro'yxatdan o'ting</h1>
+        <p class="lead">Email orqali kod yuboriladi — kod 10 daqiqa ichida amal qiladi.</p>
+      </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="flash">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('register') }}" autocomplete="off" novalidate>
+      <input name="name" type="text" placeholder="Ismingiz (ixtiyoriy)" maxlength="60">
+      <input name="email" type="email" placeholder="Email (gmail tavsiya qilinadi)" required>
+      <input name="password" type="password" placeholder="Parol (kamida 6 belgi)" required minlength="6">
+      <button type="submit">Tasdiqlash kodini yuborish</button>
+    </form>
+
+    <p style="margin-top:12px" class="muted">Allaqachon hisobingiz bormi? <a href="{{ url_for('login') }}" style="color:#00d4ff;text-decoration:none">Kirish</a></p>
+  </div>
+</body>
+</html>

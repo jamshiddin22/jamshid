@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StarK — Kodni tasdiqlash</title>
+  <style>
+    *{box-sizing:border-box;font-family:Poppins,system-ui;}
+    body{margin:0;min-height:100vh;background:url("{{ url_for('static', filename='images/spacex.jpg') }}") center/cover no-repeat;color:#fff;display:flex;align-items:center;justify-content:center}
+    body::before{content:"";position:fixed;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(0,0,0,0.75))}
+    .box{position:relative;z-index:1;background:rgba(255,255,255,0.04);padding:24px;border-radius:14px;width:360px;max-width:94%}
+    h2{margin:0 0 10px}
+    p{margin:0 0 12px;color:rgba(255,255,255,0.9)}
+    input{width:100%;padding:12px;border-radius:10px;border:none;background:rgba(255,255,255,0.06);color:#fff}
+    .row{display:flex;gap:10px;margin-top:12px}
+    .btn{padding:10px 14px;border-radius:10px;border:none;background:linear-gradient(90deg,#00d4ff,#0078ff);font-weight:700;cursor:pointer}
+    .link{align-self:center;color:rgba(255,255,255,0.85);text-decoration:none}
+    .flash{padding:8px;border-radius:8px;background:rgba(0,0,0,0.2);margin-bottom:8px}
+  </style>
+</head>
+<body>
+  <div class="box" role="main">
+    <h2>Kodni kiriting</h2>
+    <p>Biz <strong>{{ email }}</strong> ga 6 xonali kod yubordik. Kod {{ (ttl // 60) }} daqiqa davomida amal qiladi.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="flash">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
+    <form method="POST" action="{{ url_for('verify') }}">
+      <input name="code" type="text" inputmode="numeric" placeholder="6 xonali kod" required maxlength="6" pattern="[0-9]{6}">
+      <div class="row">
+        <button class="btn" type="submit">Tasdiqlash</button>
+        <a class="link" href="{{ url_for('resend_code') }}">Kod kelmadi? Qayta yuborish</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
